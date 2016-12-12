@@ -11,7 +11,10 @@ numbers = re.compile('([0-9]+)')
 
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn
+try:
+  import seaborn
+except ImportError as e:
+  print("seaborn is not available!")
 
 import glob
 
@@ -48,7 +51,7 @@ def calculate_z_indices():
   print(z_bins[low], z_bins[high])
   return (low, high)
 
-def main():
+def main(show_spectrum=False):
   #so, now have the correct indices to slice out the parameters
   low_x, high_x  = calculate_x_indices()
   low_z, high_z  = calculate_z_indices()
@@ -102,7 +105,7 @@ def main():
       sub_dose_grid = np.array(dose_grid[low_x:high_x+1, :, low_z:high_z+1])
       print("shape:      ", sub_dose_grid.shape)
       print("# elements: ", len(np.nonzero(sub_dose_grid.ravel())[0]))
-      print("elements:   ", np.nonzero(sub_dose_grid.ravel()))
+      # print("elements:   ", np.nonzero(sub_dose_grid.ravel()))
 
       elements = len(np.nonzero(sub_dose_grid.ravel())[0])
       non_zero_index = np.nonzero(sub_dose_grid.ravel())[0]
@@ -130,25 +133,21 @@ def main():
       #     ascii_file.write(str(index_value) + " ")
 
       #print(125**3)
-      print("converting to numpy array")
-      doses = np.array(list_doses)
-      print(np.mean(doses))
-      print(np.std(doses))
-      print("done calculation")
-      print(np.unravel_index(list_indices, (125,125,125)))
+      # print("converting to numpy array")
+      # doses = np.array(list_doses)
+      # print(np.mean(doses))
+      # print(np.std(doses))
+      # print("done calculation")
+      # print(np.unravel_index(list_indices, (125,125,125)))
 
-      plt.figure()
-      ax = plt.subplot(111)
-      plt.hist(doses, bins=1000)
-      ax.set_yscale("log", nonposy='clip')
-      plt.show()
-      
-
-      # if not data:
-      #   break
-      # s = unpack(struct_format, data)
-      # print(s)
+      if show_spectrum is True:
+        plt.figure()
+        ax = plt.subplot(111)
+        plt.hist(doses, bins=1000)
+        ax.set_yscale("log", nonposy='clip')
+        plt.show()
+  return 0
 
 
 if __name__ == '__main__':
-  main()
+  main(show_spectrum=False)
