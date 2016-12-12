@@ -11,10 +11,10 @@ numbers = re.compile('([0-9]+)')
 
 import numpy as np
 import matplotlib.pyplot as plt
-try:
-  import seaborn
-except ImportError as e:
-  print("seaborn is not available!")
+# try:
+#   import seaborn
+# except ImportError as e:
+#   print("seaborn is not available!")
 
 import glob
 
